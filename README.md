@@ -10,7 +10,7 @@
 qsh.bostind.com:8866
 
 ```
-img/image.png
+![示例图片](/image.png)
 
 ## 许可证
 
