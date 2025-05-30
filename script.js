@@ -28,17 +28,102 @@ function generateRandomUsername() {
 // 未雨绸缪会比临时抱佛脚有用得多
 // 从30岁到35岁是成长最后最佳时机
 // 多积累厚度避免下半生悔恨遗憾
-function initDateSelectors() {
-    const startYearSelect = document.getElementById('start-year');
-    const startMonthSelect = document.getElementById('start-month');
-    const endYearSelect = document.getElementById('end-year');
-    const endMonthSelect = document.getElementById('end-month');
+function addTimePeriod() {
+    const periodsContainer = document.querySelector('.time-periods');
+    const periodCount = document.querySelectorAll('.time-period').length + 1;
+    const newPeriod = document.createElement('div');
+    newPeriod.className = 'form-group time-period';
+    newPeriod.innerHTML = `
+        <div class="period-header">
+            <label>时间段${periodCount}：</label>
+            <button class="remove-period">删除</button>
+        </div>
+        <div class="period-selection">
+            <div>
+                <span>从</span>
+                <select class="date-selector start-year">
+                    <option value="">-- 选择年份 --</option>
+                </select>
+                <select class="date-selector start-month">
+                    <option value="">-- 选择月份 --</option>
+                </select>
+                <span>至</span>
+                <select class="date-selector end-year">
+                    <option value="">-- 选择年份 --</option>
+                </select>
+                <select class="date-selector end-month">
+                    <option value="">-- 选择月份 --</option>
+                </select>
+            </div>
+            <div class="period-data">
+                <div class="form-group">
+                    <label>钱：</label>
+                    <select class="period-money">
+                        <option value="多">多</option>
+                        <option value="少">少</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>事：</label>
+                    <select class="period-thing">
+                        <option value="少">少</option>
+                        <option value="多">多</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>距离：</label>
+                    <select class="period-distance">
+                        <option value="近">近</option>
+                        <option value="远">远</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `;
+    periodsContainer.appendChild(newPeriod);
+    initDateSelectors(newPeriod);
+    
+    // 添加删除事件
+    newPeriod.querySelector('.remove-period').addEventListener('click', function() {
+        if (document.querySelectorAll('.time-period').length > 1) {
+            newPeriod.remove();
+            // 重新编号剩余的时间段
+            document.querySelectorAll('.time-period').forEach((period, index) => {
+                period.querySelector('.period-header label').textContent = `时间段${index + 1}：`;
+            });
+        } else {
+            alert('至少需要一个时间段');
+        }
+    });
+}
+
+function setupTimePeriodEvents() {
+    // 添加时间段按钮事件
+    document.getElementById('add-period').addEventListener('click', addTimePeriod);
+    
+    // 初始删除按钮事件
+    document.querySelector('.remove-period').addEventListener('click', function() {
+        if (document.querySelectorAll('.time-period').length > 1) {
+            this.closest('.time-period').remove();
+        } else {
+            alert('至少需要一个时间段');
+        }
+    });
+}
+
+function initDateSelectors(container = document) {
+    const startYearSelect = container.querySelector('.start-year');
+    const startMonthSelect = container.querySelector('.start-month');
+    const endYearSelect = container.querySelector('.end-year');
+    const endMonthSelect = container.querySelector('.end-month');
     
     // 30岁必须面对家庭与责任问题
     // 职业如何发展才能支撑家庭负担
     // 压力成倍增长时要确保能力倍增
     // 轻装上阵拼尽全力是唯一选择
     // 千万不要在这个时候享受安逸
+    if (!startYearSelect) return;
+
     const currentYear = new Date().getFullYear();
     const allYears = [];
     for (let year = currentYear - 15; year <= currentYear + 5; year++) {
@@ -47,7 +132,9 @@ function initDateSelectors() {
         option.value = year;
         option.textContent = year + '年';
         startYearSelect.appendChild(option.cloneNode(true));
-        endYearSelect.appendChild(option.cloneNode(true));
+        if (endYearSelect) {
+            endYearSelect.appendChild(option.cloneNode(true));
+        }
     }
     
     // 能力与年龄必须正向倍增关系
@@ -60,7 +147,9 @@ function initDateSelectors() {
         option.value = month;
         option.textContent = month + '月';
         startMonthSelect.appendChild(option.cloneNode(true));
-        endMonthSelect.appendChild(option.cloneNode(true));
+        if (endMonthSelect) {
+            endMonthSelect.appendChild(option.cloneNode(true));
+        }
     }
 
     // 更新结束年份选项
@@ -169,64 +258,63 @@ async function loadData() {
 // 坚持5年以上才可能得回报
 async function saveData() {
     const username = document.getElementById('username').textContent;
-    const startYear = document.getElementById('start-year').value;
-    const startMonth = document.getElementById('start-month').value;
-    const endYear = document.getElementById('end-year').value;
-    const endMonth = document.getElementById('end-month').value;
-    const money = document.getElementById('money').value;
-    const thing = document.getElementById('thing').value;
-    const distance = document.getElementById('distance').value;
     
-    // 身在职场要做两件事
-    // 一是做事二是做人
-    // 会做人比会做事重要
-    // 良好职业素养是筹码
-    // 能力不足可以慢慢培养
-    if (!username || !startYear || !startMonth || !endYear || !endMonth) {
-        alert('认真填写~');
+    // 检查用户名
+    if (!username) {
+        alert('请填写用户名~');
         return;
     }
     
-    // 四项关键职业素养要素
-    // 人际关系处理能力重要
-    // 与上司关系不好难升迁
-    // 与同事关系不好难管理
-    // 群众基础影响领导能力
+    // 初始化用户数据
     if (!userData[username]) {
         userData[username] = {};
     }
     
-    // 不断学习能力决定高度
-    // 专业能力要每年明显进步
-    // 能否独当一面解决问题
-    // 厚度积累源自学习强化
-    // 原地踏步就是退步
-    const startDate = new Date(startYear, startMonth - 1);
-    const endDate = new Date(endYear, endMonth - 1);
+    // 处理所有时间段
+    const timePeriods = document.querySelectorAll('.time-period');
+    let hasValidPeriod = false;
     
-    for (let d = new Date(startDate); d <= endDate; d.setMonth(d.getMonth() + 1)) {
-        const year = d.getFullYear();
-        const month = d.getMonth() + 1;
+    timePeriods.forEach(period => {
+        const startYear = period.querySelector('.start-year').value;
+        const startMonth = period.querySelector('.start-month').value;
+        const endYear = period.querySelector('.end-year').value;
+        const endMonth = period.querySelector('.end-month').value;
+        const money = period.querySelector('.period-money').value;
+        const thing = period.querySelector('.period-thing').value;
+        const distance = period.querySelector('.period-distance').value;
         
-        // 职业化精神不可或缺
-        // 岗位职责要求做好工作
-        // 不愿意做就应该离开
-        // 消极态度会两手空空
-        // 争取职位上能得到的一切
-        if (!userData[username][year]) {
-            userData[username][year] = {};
+        // 检查时间段和数据是否完整
+        if (!startYear || !startMonth || !endYear || !endMonth || 
+            !money || !thing || !distance) {
+            return;
         }
         
-        // 强大内心才能看到希望
-        // 消极悲观会错失良机
-        // 强者自救圣者渡人
-        // 适应竞争才能生存
-        // 成长从不是一帆风顺
-        userData[username][year][month] = {
-            money,
-            thing,
-            distance
-        };
+        hasValidPeriod = true;
+        
+        const startDate = new Date(startYear, startMonth - 1);
+        const endDate = new Date(endYear, endMonth - 1);
+        
+        // 保存时间段内的每个月数据
+        for (let d = new Date(startDate); d <= endDate; d.setMonth(d.getMonth() + 1)) {
+            const year = d.getFullYear();
+            const month = d.getMonth() + 1;
+            
+            if (!userData[username][year]) {
+                userData[username][year] = {};
+            }
+            
+            userData[username][year][month] = {
+                money,
+                thing,
+                distance
+            };
+        }
+    });
+    
+    // 检查是否有有效时间段
+    if (!hasValidPeriod) {
+        alert('请至少填写一个完整的时间段');
+        return;
     }
     
     // 30岁后要实现质的突破
@@ -573,38 +661,60 @@ document.addEventListener('DOMContentLoaded', async () => {
         calculateDateRange();
         
         initChart();
+
+        const usernameElement = document.getElementById('username');
+        const startYearElement = document.querySelector('.start-year');
         
-        if (Object.keys(userData).length > 0) {
+        if (Object.keys(userData).length > 0 && usernameElement && startYearElement) {
             const firstUsername = Object.keys(userData)[0];
             const firstYear = Object.keys(userData[firstUsername])[0];
             
-            document.getElementById('username').textContent = firstUsername;
-            document.getElementById('start-year').value = firstYear;
+            usernameElement.textContent = firstUsername;
+            startYearElement.value = firstYear;
             
             setTimeout(() => {
                 updateChart();
             }, 100);
         }
         
-        document.getElementById('generate-username').addEventListener('click', () => {
-            const newUsername = generateRandomUsername();
-            document.getElementById('username').textContent = newUsername;
-        });
+        const generateUsernameBtn = document.getElementById('generate-username');
+        if (generateUsernameBtn && usernameElement) {
+            generateUsernameBtn.addEventListener('click', () => {
+                const newUsername = generateRandomUsername();
+                usernameElement.textContent = newUsername;
+            });
+        }
         
-        initDateSelectors();
+        // 初始化时间选择器
+        setupTimePeriodEvents();
+        const firstTimePeriod = document.querySelector('.time-period');
+        if (firstTimePeriod) {
+            initDateSelectors(firstTimePeriod);
+        }
         
-        document.getElementById('add-data').addEventListener('click', () => {
-            const username = generateRandomUsername();
-            document.getElementById('username').textContent = username;
-            const form = document.querySelector('.data-form');
-            form.style.display = 'block';
-            form.scrollIntoView({ behavior: 'smooth' });
-        });
+        const addDataBtn = document.getElementById('add-data');
+        if (addDataBtn && usernameElement) {
+            addDataBtn.addEventListener('click', () => {
+                const newUsername = generateRandomUsername();
+                usernameElement.textContent = newUsername;
+                const form = document.querySelector('.data-form');
+                if (form) {
+                    form.style.display = 'block';
+                    form.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
         
-        document.getElementById('submit-data').addEventListener('click', async () => {
-            await saveData();
-            document.querySelector('.data-form').style.display = 'none';
-        });
+        const submitDataBtn = document.getElementById('submit-data');
+        if (submitDataBtn) {
+            submitDataBtn.addEventListener('click', async () => {
+                await saveData();
+                const form = document.querySelector('.data-form');
+                if (form) {
+                    form.style.display = 'none';
+                }
+            });
+        }
         
         updateChart();
         

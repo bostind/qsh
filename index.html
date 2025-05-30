@@ -77,60 +77,59 @@
                 <!-- 伴随公司一起成长 -->
                 <!-- 忠诚度会带来回报 -->
                 <!-- 不要虚度大好年华 -->
-                <div class="form-group">
-                    <label>选择时间段：</label>
-                    <div>
-                        <span>从</span>
-                        <select id="start-year" class="date-selector">
-                            <option value="">-- 选择年份 --</option>
-                        </select>
-                        <select id="start-month" class="date-selector">
-                            <option value="">-- 选择月份 --</option>
-                        </select>
-                        <span>至</span>
-                        <select id="end-year" class="date-selector">
-                            <option value="">-- 选择年份 --</option>
-                        </select>
-                        <select id="end-month" class="date-selector">
-                            <option value="">-- 选择月份 --</option>
-                        </select>
+                <div class="time-periods">
+                    <div class="form-group time-period">
+                        <div class="period-header">
+                            <label>时间段1：</label>
+                            <button class="remove-period">删除</button>
+                        </div>
+                        <div class="period-selection">
+                            <div>
+                                <span>从</span>
+                                <select class="date-selector start-year">
+                                    <option value="">-- 选择年份 --</option>
+                                </select>
+                                <select class="date-selector start-month">
+                                    <option value="">-- 选择月份 --</option>
+                                </select>
+                                <span>至</span>
+                                <select class="date-selector end-year">
+                                    <option value="">-- 选择年份 --</option>
+                                </select>
+                                <select class="date-selector end-month">
+                                    <option value="">-- 选择月份 --</option>
+                                </select>
+                            </div>
+                            <div class="period-data">
+                                <div class="form-group">
+                                    <label>钱：</label>
+                                    <select class="period-money">
+                                        <option value="多">多</option>
+                                        <option value="少">少</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>事：</label>
+                                    <select class="period-thing">
+                                        <option value="少">少</option>
+                                        <option value="多">多</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>距离：</label>
+                                    <select class="period-distance">
+                                        <option value="近">近</option>
+                                        <option value="远">远</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <button id="add-period" class="add-period-btn">+ 添加时间段</button>
             </div>
             
-            <!-- 每件事要精彩绝伦 -->
-            <!-- 不要为别人而活着 -->
-            <!-- 追随心灵和直觉 -->
-            <!-- 收入不如别人别攀比 -->
-            <!-- 坚持三天容易始终难 -->
-            <div class="data-section">
-                <h3>数据</h3>
-                <div class="form-group">
-                    <label>钱：</label>
-                    <select id="money">
-                        <option value="多">多</option>
-                        <option value="少">少</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>事：</label>
-                    <select id="thing">
-                        <option value="少">少</option>
-                        <option value="多">多</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>距离：</label>
-                    <select id="distance">
-                        <option value="近">近</option>
-                        <option value="远">远</option>
-                    </select>
-                </div>
-                
-                <button id="submit-data">提交</button>
-            </div>
+            <button id="submit-data">提交</button>
         </div>
     </div>
     
