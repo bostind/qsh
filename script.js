@@ -1,18 +1,19 @@
-// 你所有不曾料想过的问题，都会随时间推移与你不期而遇
-// 所有曾经潇洒的随遇而安，也会随时间流逝让你承担代价
-// 唯一不可阻挡的是时间，它像一把利刃无声切开一切
-// 我始终相信一句话：出来混，迟早要还的
-// 希望每个人的生命都能够迎着太阳开花结果
-// 时间能解释一切，时间能证明一切，时间能解决一切
 
+
+/**
+ * 形容词列表，用于生成随机用户名
+ */
 const adjectives = ['快乐', '聪明', '勇敢', '幸运', '勤奋', '温柔', '活泼', '安静', '幽默', '认真'];
+
+/**
+ * 名词列表，用于生成随机用户名
+ */
 const nouns = ['老虎', '熊猫', '狮子', '兔子', '猫咪', '狗狗', '小鸟', '海豚', '大象', '长颈鹿'];
 
-// 35岁以上人群对职业规划需求迫切
-// 时间点的把握对成长起决定作用
-// 职业发展成功者都有共同特征
-// 在自己熟悉领域精耕细作10年以上
-// 找不到位置的人往往频繁换方向
+/**
+ * 生成随机用户名
+ * @returns {string} 生成的用户名，格式为"形容词+的+名词+时间戳"
+ */
 function generateRandomUsername() {
     const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
     const noun = nouns[Math.floor(Math.random() * nouns.length)];
@@ -23,17 +24,20 @@ function generateRandomUsername() {
     return `${adj}的${noun}${timestamp}`;
 }
 
-// 很多企业招聘明确规定35岁以下
-// 35岁才思考这问题可能已无力解决
-// 未雨绸缪会比临时抱佛脚有用得多
-// 从30岁到35岁是成长最后最佳时机
-// 多积累厚度避免下半生悔恨遗憾
+
+/**
+ * 添加新的时间段
+ * 1. 创建新的时间段DOM元素
+ * 2. 设置开始时间为上一时间段的结束时间+1个月
+ * 3. 初始化日期选择器
+ * 4. 添加删除事件处理
+ */
 function addTimePeriod() {
     const periodsContainer = document.querySelector('.time-periods');
     const periods = document.querySelectorAll('.time-period');
     const periodCount = periods.length + 1;
     
-    // 获取上一个时间段的结束时间
+    // 获取上一个时间段的结束时间(用于设置新时间段的开始时间)
     let prevEndYear = new Date().getFullYear();
     let prevEndMonth = 1;
     if (periods.length > 0) {
@@ -132,8 +136,13 @@ function addTimePeriod() {
     });
 }
 
+/**
+ * 初始化时间段相关事件
+ * 1. 添加时间段按钮点击事件
+ * 2. 初始化删除按钮事件
+ */
 function setupTimePeriodEvents() {
-    // 添加时间段按钮事件
+    // 绑定添加时间段按钮点击事件
     document.getElementById('add-period').addEventListener('click', addTimePeriod);
     
     // 初始删除按钮事件
@@ -146,17 +155,20 @@ function setupTimePeriodEvents() {
     });
 }
 
+/**
+ * 初始化日期选择器
+ * @param {HTMLElement} [container=document] - 包含日期选择器的容器
+ * 功能：
+ * 1. 初始化年份和月份选项
+ * 2. 设置开始和结束日期的联动逻辑
+ */
 function initDateSelectors(container = document) {
     const startYearSelect = container.querySelector('.start-year');
     const startMonthSelect = container.querySelector('.start-month');
     const endYearSelect = container.querySelector('.end-year');
     const endMonthSelect = container.querySelector('.end-month');
     
-    // 30岁必须面对家庭与责任问题
-    // 职业如何发展才能支撑家庭负担
-    // 压力成倍增长时要确保能力倍增
-    // 轻装上阵拼尽全力是唯一选择
-    // 千万不要在这个时候享受安逸
+
     if (!startYearSelect) return;
 
     const currentYear = new Date().getFullYear();
@@ -172,11 +184,7 @@ function initDateSelectors(container = document) {
         }
     }
     
-    // 能力与年龄必须正向倍增关系
-    // 工作年限应意味着匹配能力等级
-    // 频繁跳槽会导致无一技之长
-    // 长期重复劳动会原地踏步
-    // 树立危机感并跑步前进
+
     for (let month = 1; month <= 12; month++) {
         const option = document.createElement('option');
         option.value = month;
@@ -261,18 +269,26 @@ function initDateSelectors(container = document) {
     endYearSelect.addEventListener('change', updateEndMonthOptions);
 }
 
-// 知识结构要随职位提升而突破
-// 基层和高层看待问题高度不同
-// 无法与老板保持一致难获认可
-// 30岁之前积累决定未来发展
-// 没有积累30岁后突破很困难
+/**
+ * 用户数据存储对象
+ * 结构: {
+ *   [username]: {
+ *     [year]: {
+ *       [month]: {
+ *         money: string,
+ *         thing: string,
+ *         distance: string
+ *       }
+ *     }
+ *   }
+ * }
+ */
 let userData = {};
 
-// 找准可以奋斗5年10年的目标
-// 清晰目标让经验围绕点积累
-// 核心竞争力要有明确核心
-// 方向明确走得慢也比弯路快
-// 捷径就是不走弯路走直线
+/**
+ * 从data.json加载用户数据
+ * @returns {Promise<void>}
+ */
 async function loadData() {
     try {
         const response = await fetch('data.json');
@@ -286,11 +302,15 @@ async function loadData() {
     }
 }
 
-// 10000小时定律在任何领域有效
-// 最优秀的人都付出十年努力
-// 近乎苛求努力才能抓住机会
-// 机会只垂青有准备的头脑
-// 坚持5年以上才可能得回报
+
+/**
+ * 保存用户数据到服务器
+ * 1. 验证用户名和时间段数据
+ * 2. 处理时间段内每个月的数据
+ * 3. 发送数据到服务器
+ * @returns {Promise<void>}
+ * @throws {Error} 保存失败时抛出错误
+ */
 async function saveData() {
     const username = document.getElementById('username').textContent;
     
@@ -352,10 +372,7 @@ async function saveData() {
         return;
     }
     
-    // 30岁后要实现质的突破
-    // 完成专业化品牌构建
-    // 专业知识要持续成长
-    // 35岁现象可能上演
+
     // 专业是唯一依恃
     const dataStr = JSON.stringify(userData, null, 2);
     
@@ -363,10 +380,7 @@ async function saveData() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
-        // 把自己培养成优秀管理者
-        // 职位晋升是必经之路
-        // 35岁还在基础岗位没价值
-        // 管理可能改变下属命运
+
         // 错误管理会伤害团队
         const response = await fetch('/save', {
             method: 'POST',
@@ -379,10 +393,7 @@ async function saveData() {
         
         clearTimeout(timeoutId);
         
-        // 找一家成长中的公司
-        // 伴随公司一起成长
-        // 价值有更大发挥余地
-        // 忠诚度带来回报
+
         // 不要虚度大好年华
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -392,20 +403,14 @@ async function saveData() {
             throw new Error('Invalid JSON response');
         });
         
-        // 人这辈子做不了太多事
-        // 每件都要精彩绝伦
-        // 不要为别人而活
-        // 追随心灵和直觉
+
         // 其他都是次要
         if (!result.success) {
             throw new Error('Server returned unsuccessful result');
         }
         
         // 收入不如别人时不攀比
-        // 不知别人背后的付出
-        // 生活质量是自己创造的
-        // 不够好说明不够努力
-        // 坚持3天容易难在始终
+
         updateChart();
         alert('成功！');
         return;
@@ -420,6 +425,12 @@ async function saveData() {
     }
 }
 
+/**
+ * 根据用户名和索引获取颜色
+ * @param {string} username - 用户名
+ * @param {number} index - 颜色索引
+ * @returns {string} 十六进制颜色代码
+ */
 function getUserColor(username, index) {
     const colors = [
         '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
@@ -428,12 +439,21 @@ function getUserColor(username, index) {
     return colors[index % colors.length];
 }
 
+// 图表实例和数据存储
 let dataChart = null;
 let allChartData = {
-    labels: [],
-    userDatasets: {}
+    labels: [],       // 图表标签(时间)
+    userDatasets: {}  // 用户数据集
 };
 
+/**
+ * 初始化图表配置
+ * 1. 创建Chart.js实例
+ * 2. 配置图表选项:
+ *    - 响应式布局
+ *    - 自定义提示框
+ *    - 坐标轴设置
+ */
 function initChart() {
     const ctx = document.getElementById('data-chart').getContext('2d');
     dataChart = new Chart(ctx, {
@@ -504,6 +524,11 @@ function initChart() {
     });
 }
 
+/**
+ * 更新图表可见数据范围
+ * @param {number} startIndex - 开始索引
+ * @param {number} endIndex - 结束索引
+ */
 function updateVisibleData(startIndex, endIndex) {
     if (!dataChart || !allChartData.labels.length) return;
     
@@ -524,6 +549,12 @@ function updateVisibleData(startIndex, endIndex) {
     dataChart.update();
 }
 
+/**
+ * 更新图表数据
+ * 1. 从userData提取所有年份和月份
+ * 2. 构建图表标签和数据
+ * 3. 更新图表实例
+ */
 function updateChart() {
     try {
         const allYears = new Set();
@@ -648,11 +679,20 @@ function updateChart() {
     }
 }
 
+/**
+ * 计算并显示总用户数
+ * 更新页面中id为'total-users'的元素内容
+ */
 function calculateTotalUsers() {
     const totalUsers = Object.keys(userData).length;
     document.getElementById('total-users').textContent = totalUsers;
 }
 
+/**
+ * 计算并显示数据日期范围
+ * 1. 遍历userData找出最小和最大日期
+ * 2. 更新页面中id为'date-range'的元素内容
+ */
 function calculateDateRange() {
     let minDate = { year: Infinity, month: Infinity };
     let maxDate = { year: -Infinity, month: -Infinity };
@@ -688,6 +728,13 @@ function calculateDateRange() {
     }
 }
 
+/**
+ * 页面加载完成后初始化应用
+ * 1. 加载数据
+ * 2. 计算并显示用户数和日期范围
+ * 3. 初始化图表
+ * 4. 设置事件监听器
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await loadData();
