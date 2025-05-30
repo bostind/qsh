@@ -332,7 +332,7 @@ function initChart() {
                             if (context.dataset.category === 'money') {
                                 displayValue = value === 1 ? '多' : '少';
                             } else if (context.dataset.category === 'thing') {
-                                displayValue = value === 1 ? '多' : '少';
+                                displayValue = value === 1 ? '少' : '多';
                             } else if (context.dataset.category === 'distance') {
                                 displayValue = value === 1 ? '近' : '远';
                             }
