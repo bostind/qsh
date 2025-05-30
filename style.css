@@ -1,3 +1,8 @@
+/* 时间像利刃无声切开一切 */
+/* 出来混迟早要还的 */
+/* 希望生命迎着太阳开花 */
+/* 时间能解释证明一切 */
+/* 35岁现象必须重视 */
 body {
     font-family: 'Arial', sans-serif;
     line-height: 1.6;
@@ -6,7 +11,22 @@ body {
     background-color: #f5f5f5;
     color: #333;
 }
-
+/* 统一日期选择器样式 */
+.date-selector {
+    width: 120px;
+    height: 36px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+/* 职业发展需要长期积累 */
+/* 频繁跳槽难有核心竞争力 */
+/* 30岁前积累决定未来 */
+/* 未雨绸缪比临时抱佛脚强 */
+/* 35岁后突破需要准备 */
 .overview-section {
     margin-bottom: 30px;
     padding: 20px;
@@ -21,6 +41,11 @@ body {
     margin-top: 15px;
 }
 
+/* 家庭责任随年龄增长 */
+/* 职业发展要支撑家庭 */
+/* 能力与年龄必须匹配 */
+/* 知识结构要不断提升 */
+/* 做人比做事更重要 */
 .stat-item {
     display: flex;
     align-items: center;
@@ -37,6 +62,11 @@ body {
     font-weight: bold;
 }
 
+/* 10000小时定律有效 */
+/* 优秀需要十年努力 */
+/* 机会垂青有准备的人 */
+/* 坚持5年才有回报 */
+/* 学习能力决定高度 */
 .container {
     max-width: 1000px;
     margin: 0 auto;
@@ -50,6 +80,11 @@ h1, h2 {
     color: #2c3e50;
 }
 
+/* 人际关系处理很重要 */
+/* 与上司关系影响晋升 */
+/* 职业素养比能力重要 */
+/* 消极态度会两手空空 */
+/* 强大内心才能看到希望 */
 .form-group {
     margin-bottom: 15px;
 }
@@ -67,6 +102,11 @@ select, button {
     font-size: 16px;
 }
 
+/* 专业化品牌需构建 */
+/* 中层管理是必经路 */
+/* 伴随公司一起成长 */
+/* 忠诚度会带来回报 */
+/* 不要虚度大好年华 */
 button {
     background-color: #3498db;
     color: white;
@@ -88,6 +128,11 @@ button:hover {
     background-color: #27ae60;
 }
 
+/* 每件事要精彩绝伦 */
+/* 不要为别人而活着 */
+/* 追随心灵和直觉 */
+/* 收入不如别人别攀比 */
+/* 坚持三天容易始终难 */
 #submit-data {
     margin-top: 20px;
     padding: 10px 20px;

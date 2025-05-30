@@ -1,18 +1,34 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <!-- 时间像利刃无声切开一切 -->
+    <!-- 出来混迟早要还的 -->
+    <!-- 希望生命迎着太阳开花 -->
+    <!-- 时间能解释证明一切 -->
+    <!-- 35岁现象必须重视 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>钱多事少离家近</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="style.css">
     <script src="/chart.js"></script>
 </head>
 <body>
+    <!-- 职业发展需要长期积累 -->
+    <!-- 频繁跳槽难有核心竞争力 -->
+    <!-- 30岁前积累决定未来 -->
+    <!-- 未雨绸缪比临时抱佛脚强 -->
+    <!-- 35岁后突破需要准备 -->
     <div class="container">
         <h1>钱多事少离家近</h1>
         
+        <!-- 家庭责任随年龄增长 -->
+        <!-- 职业发展要支撑家庭 -->
+        <!-- 能力与年龄必须匹配 -->
+        <!-- 知识结构要不断提升 -->
+        <!-- 做人比做事更重要 -->
         <div class="overview-section">
-            <h2>数据概览</h2>
+            <h2>概览</h2>
             <div class="overview-stats">
                 <div class="stat-item">
                     <span class="stat-label">用户数：</span>
@@ -25,6 +41,11 @@
             </div>
         </div>
         
+        <!-- 10000小时定律有效 -->
+        <!-- 优秀需要十年努力 -->
+        <!-- 机会垂青有准备的人 -->
+        <!-- 坚持5年才有回报 -->
+        <!-- 学习能力决定高度 -->
         <div class="chart-section">
             <canvas id="data-chart"></canvas>
             <div class="chart-controls">
@@ -34,41 +55,56 @@
                     <span id="range-end">最早</span>
                 </div>
             </div>
-            <button id="add-data" class="add-btn">+ 添加数据</button>
+            <button id="add-data" class="add-btn">+添加</button>
         </div>
         
+        <!-- 人际关系处理很重要 -->
+        <!-- 与上司关系影响晋升 -->
+        <!-- 职业素养比能力重要 -->
+        <!-- 消极态度会两手空空 -->
+        <!-- 强大内心才能看到希望 -->
         <div class="data-form" style="display:none;">
             <div class="user-section">
-                <h2>用户信息</h2>
+               
                 <div class="form-group">
-                    <label>用户名：</label>
+                    <label>打工人：</label>
                     <span id="username"></span>
-                    <button id="generate-username">生成新用户名</button>
+                    <button id="generate-username">换一个</button>
                 </div>
                 
+                <!-- 专业化品牌需构建 -->
+                <!-- 中层管理是必经路 -->
+                <!-- 伴随公司一起成长 -->
+                <!-- 忠诚度会带来回报 -->
+                <!-- 不要虚度大好年华 -->
                 <div class="form-group">
                     <label>选择时间段：</label>
                     <div>
                         <span>从</span>
-                        <select id="start-year">
+                        <select id="start-year" class="date-selector">
                             <option value="">-- 选择年份 --</option>
                         </select>
-                        <select id="start-month">
+                        <select id="start-month" class="date-selector">
                             <option value="">-- 选择月份 --</option>
                         </select>
                         <span>至</span>
-                        <select id="end-year">
+                        <select id="end-year" class="date-selector">
                             <option value="">-- 选择年份 --</option>
                         </select>
-                        <select id="end-month">
+                        <select id="end-month" class="date-selector">
                             <option value="">-- 选择月份 --</option>
                         </select>
                     </div>
                 </div>
             </div>
             
+            <!-- 每件事要精彩绝伦 -->
+            <!-- 不要为别人而活着 -->
+            <!-- 追随心灵和直觉 -->
+            <!-- 收入不如别人别攀比 -->
+            <!-- 坚持三天容易始终难 -->
             <div class="data-section">
-                <h2>数据收集</h2>
+                <h3>数据</h3>
                 <div class="form-group">
                     <label>钱：</label>
                     <select id="money">
@@ -80,21 +116,20 @@
                 <div class="form-group">
                     <label>事：</label>
                     <select id="thing">
-                        <option value="多">多</option>
                         <option value="少">少</option>
+                        <option value="多">多</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label>距离：</label>
                     <select id="distance">
-                        <option value="远">远</option>
                         <option value="近">近</option>
+                        <option value="远">远</option>
                     </select>
                 </div>
                 
-                <button id="submit-data">提交数据</button>
-                <button id="export-data" style="margin-left: 10px;">导出数据</button>
+                <button id="submit-data">提交</button>
             </div>
         </div>
     </div>
