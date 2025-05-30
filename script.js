@@ -706,6 +706,42 @@ function updateChart() {
         if (dataLength > 0) {
             document.getElementById('range-start').textContent = '最早';
             document.getElementById('range-end').textContent = '最新';
+
+            // 计算百分比统计
+            let moneyMoreCount = 0;
+            let moneyLessCount = 0;
+            let thingMoreCount = 0;
+            let thingLessCount = 0;
+            let distanceNearCount = 0;
+            let distanceFarCount = 0;
+
+            Object.values(userData).forEach(user => {
+                Object.values(user).forEach(months => {
+                    Object.values(months).forEach(data => {
+                        if (data.money === '多') moneyMoreCount++;
+                        if (data.money === '少') moneyLessCount++;
+                        if (data.thing === '多') thingMoreCount++;
+                        if (data.thing === '少') thingLessCount++;
+                        if (data.distance === '近') distanceNearCount++;
+                        if (data.distance === '远') distanceFarCount++;
+                    });
+                });
+            });
+
+            // 计算百分比
+            const moneyMorePercent = moneyMoreCount + moneyLessCount > 0 
+                ? Math.round(moneyMoreCount / (moneyMoreCount + moneyLessCount) * 100) : 0;
+            const thingLessPercent = thingMoreCount + thingLessCount > 0 
+                ? Math.round(thingLessCount / (thingMoreCount + thingLessCount) * 100) : 0;
+            const distanceNearPercent = distanceNearCount + distanceFarCount > 0 
+                ? Math.round(distanceNearCount / (distanceNearCount + distanceFarCount) * 100) : 0;
+
+            // 更新统计显示
+            document.getElementById('stats-money').textContent = `${moneyMorePercent}%`;
+            document.getElementById('stats-thing').textContent = `${thingLessPercent}%`;
+            document.getElementById('stats-distance').textContent = `${distanceNearPercent}%`;
+
+
         }
     } catch (error) {
         console.error('更新图表错误:', error);
