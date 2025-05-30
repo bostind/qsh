@@ -473,11 +473,11 @@ function initChart() {
                             let displayValue = '';
                             
                             if (context.dataset.category === 'money') {
-                                displayValue = value === 1 ? '多' : '少';
+                                displayValue = value === 3 ? '多' : (value === -3 ? '少' : '');
                             } else if (context.dataset.category === 'thing') {
-                                displayValue = value === 1 ? '少' : '多';
+                                displayValue = value === 2 ? '少' : (value === -2 ? '多' : '');
                             } else if (context.dataset.category === 'distance') {
-                                displayValue = value === 1 ? '近' : '远';
+                                displayValue = value === 1 ? '近' : (value === -1 ? '远' : '');
                             }
                             
                             return `${label}: ${displayValue}`;
@@ -498,17 +498,21 @@ function initChart() {
             },
             scales: {
                 y: {
-                    beginAtZero: true,
-                    max: 2,
+                    min: -6,
+                    max: 6,
                     grid: {
                         display: false
                     },
                     ticks: {
-                        stepSize: 1,
+                        stepSize: 0.5,
                         callback: function(value) {
                             const labels = {
-                                0: '钱少事多离家远',
-                                1: '钱多事少离家近'
+                                3: '钱多',
+                                2: '事少',
+                                1: '离家近',
+                                '-1': '离家远',
+                                '-2': '事多',
+                                '-3': '钱少'
                             };
                             return labels[value] || '';
                         }
@@ -602,9 +606,9 @@ function updateChart() {
                         const userData = allChartData.userDatasets[username];
                         
                         if (userMonthData.length > 0) {
-                            userData.moneyData.push(userMonthData[0].money === '多' ? 1 : 0);
-                            userData.thingData.push(userMonthData[0].thing === '多' ? 0 : 1);
-                            userData.distanceData.push(userMonthData[0].distance === '远' ? 0 : 1);
+                            userData.moneyData.push(userMonthData[0].money === '多' ? 3 : -3);
+                            userData.thingData.push(userMonthData[0].thing === '多' ? -2 : 2);
+                            userData.distanceData.push(userMonthData[0].distance === '远' ? -1 : 1);
                         } else {
                             userData.moneyData.push(null);
                             userData.thingData.push(null);
