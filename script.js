@@ -190,8 +190,8 @@ function initChart() {
                         stepSize: 1,
                         callback: function(value) {
                             const labels = {
-                                0: '少/远',
-                                1: '多/近'
+                                0: '钱少事多离家远',
+                                1: '钱多事少离家近'
                             };
                             return labels[value] || '';
                         }
@@ -285,7 +285,7 @@ function updateChart() {
                         
                         if (userMonthData.length > 0) {
                             userData.moneyData.push(userMonthData[0].money === '多' ? 1 : 0);
-                            userData.thingData.push(userMonthData[0].thing === '多' ? 1 : 0);
+                            userData.thingData.push(userMonthData[0].thing === '多' ? 0 : 1);
                             userData.distanceData.push(userMonthData[0].distance === '远' ? 0 : 1);
                         } else {
                             // 没有数据时填充null
