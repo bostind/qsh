@@ -7,7 +7,8 @@
 ## Demo
 
 ```
-qsh.bostind.com:8866
+[Demo地址](http://qsh.bostind.com:8866)
+
 
 ```
 ![示例图片](/image.png)
