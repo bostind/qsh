@@ -121,8 +121,14 @@ async function saveData() {
     }
 }
 
-// 图表初始化
+// 图表数据和控件
 let dataChart = null;
+let allChartData = {
+    labels: [],
+    moneyData: [],
+    thingData: [],
+    distanceData: []
+};
 
 function initChart() {
     const ctx = document.getElementById('data-chart').getContext('2d');
@@ -176,6 +182,22 @@ function initChart() {
     });
 }
 
+// 更新可见数据范围
+function updateVisibleData(startIndex, endIndex) {
+    if (!dataChart || !allChartData.labels.length) return;
+    
+    const visibleLabels = allChartData.labels.slice(startIndex, endIndex);
+    const visibleMoneyData = allChartData.moneyData.slice(startIndex, endIndex);
+    const visibleThingData = allChartData.thingData.slice(startIndex, endIndex);
+    const visibleDistanceData = allChartData.distanceData.slice(startIndex, endIndex);
+    
+    dataChart.data.labels = visibleLabels;
+    dataChart.data.datasets[0].data = visibleMoneyData;
+    dataChart.data.datasets[1].data = visibleThingData;
+    dataChart.data.datasets[2].data = visibleDistanceData;
+    dataChart.update();
+}
+
 // 更新图表数据 - 显示所有用户数据
 function updateChart() {
     try {
@@ -205,36 +227,54 @@ function updateChart() {
         const sortedMonths = Array.from(allMonths).sort((a, b) => a - b);
         
         // 准备图表数据
-        const labels = [];
-        const moneyData = [];
-        const thingData = [];
-        const distanceData = [];
+        allChartData.labels = [];
+        allChartData.moneyData = [];
+        allChartData.thingData = [];
+        allChartData.distanceData = [];
         
         // 按时间顺序组织数据
         sortedYears.forEach(year => {
             sortedMonths.forEach(month => {
                 const monthData = allData.filter(d => d.year === year && d.month === month);
                 if (monthData.length > 0) {
-                    labels.push(`${year}年${month}月`);
+                    allChartData.labels.push(`${year}年${month}月`);
                     
                     // 计算平均值
                     const moneyAvg = monthData.reduce((sum, d) => sum + (d.money === '多' ? 1 : 0), 0) / monthData.length;
                     const thingAvg = monthData.reduce((sum, d) => sum + (d.thing === '多' ? 1 : 0), 0) / monthData.length;
                     const distanceAvg = monthData.reduce((sum, d) => sum + (d.distance === '远' ? 0 : 1), 0) / monthData.length;
                     
-                    moneyData.push(moneyAvg);
-                    thingData.push(thingAvg);
-                    distanceData.push(distanceAvg);
+                    allChartData.moneyData.push(moneyAvg);
+                    allChartData.thingData.push(thingAvg);
+                    allChartData.distanceData.push(distanceAvg);
                 }
             });
         });
         
-        if (dataChart) {
-            dataChart.data.labels = labels;
-            dataChart.data.datasets[0].data = moneyData;
-            dataChart.data.datasets[1].data = thingData;
-            dataChart.data.datasets[2].data = distanceData;
-            dataChart.update();
+        // 初始化滑块控件
+        const rangeSlider = document.getElementById('chart-range');
+        const dataLength = allChartData.labels.length;
+        const displayCount = Math.min(30, dataLength);
+        
+        rangeSlider.min = 0;
+        rangeSlider.max = Math.max(0, dataLength - displayCount);
+        rangeSlider.value = 0;
+        
+        // 默认显示最近30个数据点
+        const startIndex = Math.max(0, dataLength - displayCount);
+        updateVisibleData(startIndex, dataLength);
+        
+        // 添加滑块事件监听
+        rangeSlider.addEventListener('input', function() {
+            const startIndex = parseInt(this.value);
+            const endIndex = Math.min(startIndex + displayCount, dataLength);
+            updateVisibleData(startIndex, endIndex);
+        });
+        
+        // 更新范围标签
+        if (dataLength > 0) {
+            document.getElementById('range-start').textContent = '最新';
+            document.getElementById('range-end').textContent = '最早';
         }
     } catch (error) {
         console.error('更新图表错误:', error);
