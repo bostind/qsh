@@ -30,7 +30,26 @@ function generateRandomUsername() {
 // 多积累厚度避免下半生悔恨遗憾
 function addTimePeriod() {
     const periodsContainer = document.querySelector('.time-periods');
-    const periodCount = document.querySelectorAll('.time-period').length + 1;
+    const periods = document.querySelectorAll('.time-period');
+    const periodCount = periods.length + 1;
+    
+    // 获取上一个时间段的结束时间
+    let prevEndYear = new Date().getFullYear();
+    let prevEndMonth = 1;
+    if (periods.length > 0) {
+        const lastPeriod = periods[periods.length - 1];
+        prevEndYear = parseInt(lastPeriod.querySelector('.end-year').value) || prevEndYear;
+        prevEndMonth = parseInt(lastPeriod.querySelector('.end-month').value) || prevEndMonth;
+        
+        // 计算新的开始时间(上段结束时间+1个月)
+        if (prevEndMonth === 12) {
+            prevEndYear++;
+            prevEndMonth = 1;
+        } else {
+            prevEndMonth++;
+        }
+    }
+
     const newPeriod = document.createElement('div');
     newPeriod.className = 'form-group time-period';
     newPeriod.innerHTML = `
@@ -82,6 +101,22 @@ function addTimePeriod() {
     `;
     periodsContainer.appendChild(newPeriod);
     initDateSelectors(newPeriod);
+    
+    // 设置新的开始时间
+    if (periods.length > 0) {
+        const startYearSelect = newPeriod.querySelector('.start-year');
+        const startMonthSelect = newPeriod.querySelector('.start-month');
+        
+        if (startYearSelect && startMonthSelect) {
+            startYearSelect.value = prevEndYear;
+            startMonthSelect.value = prevEndMonth;
+            
+            // 触发日期选择器更新
+            const event = new Event('change');
+            startYearSelect.dispatchEvent(event);
+            startMonthSelect.dispatchEvent(event);
+        }
+    }
     
     // 添加删除事件
     newPeriod.querySelector('.remove-period').addEventListener('click', function() {
