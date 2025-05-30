@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "qsl",
+  "version": "1.0.0",
+  "main": "chart.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
