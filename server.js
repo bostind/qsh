@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 服务器配置
-const port = 8080;
+const port = 8866;
 const rootDir = __dirname;
 
 /**
@@ -82,5 +82,5 @@ const server = http.createServer((req, res) => {
 
 // 启动服务器
 server.listen(port, () => {
-    console.log(`Server running at http://qsh.bostind.com:8866/:${port}/`);
+    console.log(`Server running at http://qsh.bostind.com:${port}/`);
 });
