@@ -466,21 +466,52 @@ function initChart() {
             responsive: true,
             plugins: {
                 tooltip: {
+                    mode: 'index',
+                    intersect: false,
                     callbacks: {
-                        label: function(context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw;
-                            let displayValue = '';
+                        title: function(context) {
+                            return context[0].label;
+                        },
+                        label: function() {
+                            return null; // 禁用默认label显示
+                        },
+                        afterBody: function(context) {
+                            const index = context[0].dataIndex;
+                            const datasets = context[0].chart.data.datasets;
                             
-                            if (context.dataset.category === 'money') {
-                                displayValue = value === 3 ? '多' : (value === -3 ? '少' : '');
-                            } else if (context.dataset.category === 'thing') {
-                                displayValue = value === 2 ? '少' : (value === -2 ? '多' : '');
-                            } else if (context.dataset.category === 'distance') {
-                                displayValue = value === 1 ? '近' : (value === -1 ? '远' : '');
+                            // 获取当前点有数据的用户
+                            const activeUsers = [];
+                            datasets.forEach(dataset => {
+                                if (dataset.data[index] !== null) {
+                                    if (!activeUsers.includes(dataset.user)) {
+                                        activeUsers.push(dataset.user);
+                                    }
+                                }
+                            });
+                            
+                            let tooltipContent = [];
+                            
+                            activeUsers.forEach(username => {
+                                const userDatasets = datasets.filter(d => d.user === username);
+                                const moneyData = userDatasets.find(d => d.category === 'money').data[index];
+                                const thingData = userDatasets.find(d => d.category === 'thing').data[index];
+                                const distanceData = userDatasets.find(d => d.category === 'distance').data[index];
+                                
+                                tooltipContent.push(
+                                    `用户: ${username}`,
+                                    `钱: ${moneyData === 3 ? '多' : moneyData === -3 ? '少' : '无数据'}`,
+                                    `事: ${thingData === 2 ? '少' : thingData === -2 ? '多' : '无数据'}`,
+                                    `距离: ${distanceData === 1 ? '近' : distanceData === -1 ? '远' : '无数据'}`,
+                                    '---'
+                                );
+                            });
+                            
+                            // 移除最后一个分隔符
+                            if (tooltipContent.length > 0) {
+                                tooltipContent.pop();
                             }
                             
-                            return `${label}: ${displayValue}`;
+                            return tooltipContent;
                         }
                     }
                 },

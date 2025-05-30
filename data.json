@@ -837,5 +837,76 @@
         "distance": "近"
       }
     }
+  },
+  "聪明的长颈鹿1748595322238": {
+    "2016": {
+      "1": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "2": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "3": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "4": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "5": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "6": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "7": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "8": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "9": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "10": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "11": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      },
+      "12": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      }
+    },
+    "2017": {
+      "1": {
+        "money": "少",
+        "thing": "多",
+        "distance": "远"
+      }
+    }
   }
 }
