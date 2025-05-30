@@ -640,7 +640,6 @@ function updateChart() {
                 borderColor: color,
                 backgroundColor: color + '80',
                 tension: 0.1,
-                borderDash: [5, 5],
                 user: username,
                 category: 'thing'
             });
@@ -651,7 +650,6 @@ function updateChart() {
                 borderColor: color,
                 backgroundColor: color + '80',
                 tension: 0.1,
-                borderDash: [10, 5],
                 user: username,
                 category: 'distance'
             });

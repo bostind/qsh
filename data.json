@@ -808,5 +808,34 @@
         "distance": "远"
       }
     }
+  },
+  "温柔的狗狗1748594598028": {
+    "2016": {
+      "4": {
+        "money": "多",
+        "thing": "少",
+        "distance": "近"
+      },
+      "5": {
+        "money": "多",
+        "thing": "少",
+        "distance": "近"
+      },
+      "6": {
+        "money": "多",
+        "thing": "少",
+        "distance": "近"
+      },
+      "7": {
+        "money": "多",
+        "thing": "少",
+        "distance": "近"
+      },
+      "8": {
+        "money": "多",
+        "thing": "少",
+        "distance": "近"
+      }
+    }
   }
 }
