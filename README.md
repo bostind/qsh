@@ -7,7 +7,7 @@
 ## Demo
 
 ```
-https://www.bostind.com:8866
+qsh.bostind.com:8866
 
 ```
 
