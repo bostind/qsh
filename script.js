@@ -121,13 +121,20 @@ async function saveData() {
     }
 }
 
+// 生成用户颜色
+function getUserColor(username, index) {
+    const colors = [
+        '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+        '#FF9F40', '#8AC24A', '#FF5722', '#607D8B', '#E91E63'
+    ];
+    return colors[index % colors.length];
+}
+
 // 图表数据和控件
 let dataChart = null;
 let allChartData = {
     labels: [],
-    moneyData: [],
-    thingData: [],
-    distanceData: []
+    userDatasets: {}
 };
 
 function initChart() {
@@ -136,29 +143,7 @@ function initChart() {
         type: 'line',
         data: {
             labels: [],
-            datasets: [
-                {
-                    label: '钱',
-                    data: [],
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                    tension: 0.1
-                },
-                {
-                    label: '事',
-                    data: [],
-                    borderColor: 'rgb(54, 162, 235)',
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    tension: 0.1
-                },
-                {
-                    label: '距离',
-                    data: [],
-                    borderColor: 'rgb(255, 206, 86)',
-                    backgroundColor: 'rgba(255, 206, 86, 0.5)',
-                    tension: 0.1
-                }
-            ]
+            datasets: []
         },
         options: {
             responsive: true,
@@ -187,14 +172,20 @@ function updateVisibleData(startIndex, endIndex) {
     if (!dataChart || !allChartData.labels.length) return;
     
     const visibleLabels = allChartData.labels.slice(startIndex, endIndex);
-    const visibleMoneyData = allChartData.moneyData.slice(startIndex, endIndex);
-    const visibleThingData = allChartData.thingData.slice(startIndex, endIndex);
-    const visibleDistanceData = allChartData.distanceData.slice(startIndex, endIndex);
-    
     dataChart.data.labels = visibleLabels;
-    dataChart.data.datasets[0].data = visibleMoneyData;
-    dataChart.data.datasets[1].data = visibleThingData;
-    dataChart.data.datasets[2].data = visibleDistanceData;
+    
+    // 更新每个用户的数据集
+    Object.keys(allChartData.userDatasets).forEach(username => {
+        const userData = allChartData.userDatasets[username];
+        const datasets = dataChart.data.datasets.filter(d => d.user === username);
+        
+        if (datasets.length >= 3) {
+            datasets[0].data = userData.moneyData.slice(startIndex, endIndex);
+            datasets[1].data = userData.thingData.slice(startIndex, endIndex);
+            datasets[2].data = userData.distanceData.slice(startIndex, endIndex);
+        }
+    });
+    
     dataChart.update();
 }
 
@@ -228,9 +219,17 @@ function updateChart() {
         
         // 准备图表数据
         allChartData.labels = [];
-        allChartData.moneyData = [];
-        allChartData.thingData = [];
-        allChartData.distanceData = [];
+        allChartData.userDatasets = {};
+        
+        // 初始化每个用户的数据集
+        Object.keys(userData).forEach((username, index) => {
+            allChartData.userDatasets[username] = {
+                moneyData: [],
+                thingData: [],
+                distanceData: [],
+                color: getUserColor(username, index)
+            };
+        });
         
         // 按时间顺序组织数据
         sortedYears.forEach(year => {
@@ -239,15 +238,65 @@ function updateChart() {
                 if (monthData.length > 0) {
                     allChartData.labels.push(`${year}年${month}月`);
                     
-                    // 计算平均值
-                    const moneyAvg = monthData.reduce((sum, d) => sum + (d.money === '多' ? 1 : 0), 0) / monthData.length;
-                    const thingAvg = monthData.reduce((sum, d) => sum + (d.thing === '多' ? 1 : 0), 0) / monthData.length;
-                    const distanceAvg = monthData.reduce((sum, d) => sum + (d.distance === '远' ? 0 : 1), 0) / monthData.length;
-                    
-                    allChartData.moneyData.push(moneyAvg);
-                    allChartData.thingData.push(thingAvg);
-                    allChartData.distanceData.push(distanceAvg);
+                    // 为每个用户添加数据点
+                    Object.keys(allChartData.userDatasets).forEach(username => {
+                        const userMonthData = monthData.filter(d => d.username === username);
+                        const userData = allChartData.userDatasets[username];
+                        
+                        if (userMonthData.length > 0) {
+                            userData.moneyData.push(userMonthData[0].money === '多' ? 1 : 0);
+                            userData.thingData.push(userMonthData[0].thing === '多' ? 1 : 0);
+                            userData.distanceData.push(userMonthData[0].distance === '远' ? 0 : 1);
+                        } else {
+                            // 没有数据时填充null
+                            userData.moneyData.push(null);
+                            userData.thingData.push(null);
+                            userData.distanceData.push(null);
+                        }
+                    });
                 }
+            });
+        });
+        
+        // 创建数据集
+        dataChart.data.datasets = [];
+        Object.keys(allChartData.userDatasets).forEach((username, index) => {
+            const userData = allChartData.userDatasets[username];
+            const color = userData.color;
+            
+            // 钱数据集
+            dataChart.data.datasets.push({
+                label: `${username}-钱`,
+                data: userData.moneyData,
+                borderColor: color,
+                backgroundColor: color + '80',
+                tension: 0.1,
+                user: username,
+                category: 'money'
+            });
+            
+            // 事数据集
+            dataChart.data.datasets.push({
+                label: `${username}-事`,
+                data: userData.thingData,
+                borderColor: color,
+                backgroundColor: color + '80',
+                tension: 0.1,
+                borderDash: [5, 5],
+                user: username,
+                category: 'thing'
+            });
+            
+            // 距离数据集
+            dataChart.data.datasets.push({
+                label: `${username}-距离`,
+                data: userData.distanceData,
+                borderColor: color,
+                backgroundColor: color + '80',
+                tension: 0.1,
+                borderDash: [10, 5],
+                user: username,
+                category: 'distance'
             });
         });
         
