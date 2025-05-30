@@ -147,10 +147,45 @@ function initChart() {
         },
         options: {
             responsive: true,
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.dataset.label || '';
+                            const value = context.raw;
+                            let displayValue = '';
+                            
+                            if (context.dataset.category === 'money') {
+                                displayValue = value === 1 ? '多' : '少';
+                            } else if (context.dataset.category === 'thing') {
+                                displayValue = value === 1 ? '多' : '少';
+                            } else if (context.dataset.category === 'distance') {
+                                displayValue = value === 1 ? '近' : '远';
+                            }
+                            
+                            return `${label}: ${displayValue}`;
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                }
+            },
+            elements: {
+                point: {
+                    radius: 3
+                },
+                line: {
+                    spanGaps: true
+                }
+            },
             scales: {
                 y: {
                     beginAtZero: true,
                     max: 2,
+                    grid: {
+                        display: false
+                    },
                     ticks: {
                         stepSize: 1,
                         callback: function(value) {
@@ -160,6 +195,11 @@ function initChart() {
                             };
                             return labels[value] || '';
                         }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
                     }
                 }
             }
@@ -322,8 +362,8 @@ function updateChart() {
         
         // 更新范围标签
         if (dataLength > 0) {
-            document.getElementById('range-start').textContent = '最新';
-            document.getElementById('range-end').textContent = '最早';
+            document.getElementById('range-start').textContent = '最早';
+            document.getElementById('range-end').textContent = '最新';
         }
     } catch (error) {
         console.error('更新图表错误:', error);
