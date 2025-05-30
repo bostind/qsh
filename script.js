@@ -241,11 +241,60 @@ function updateChart() {
     }
 }
 
+// 计算总用户数
+function calculateTotalUsers() {
+    const totalUsers = Object.keys(userData).length;
+    document.getElementById('total-users').textContent = totalUsers;
+}
+
+// 计算数据时间范围
+function calculateDateRange() {
+    let minDate = { year: Infinity, month: Infinity };
+    let maxDate = { year: -Infinity, month: -Infinity };
+    let hasData = false;
+
+    // 遍历所有用户数据
+    Object.values(userData).forEach(user => {
+        Object.entries(user).forEach(([yearStr, months]) => {
+            const year = parseInt(yearStr);
+            const monthStrs = Object.keys(months);
+            if (monthStrs.length > 0) {
+                hasData = true;
+                const minMonth = Math.min(...monthStrs.map(Number));
+                const maxMonth = Math.max(...monthStrs.map(Number));
+                
+                // 检查是否为更早的日期
+                if (year < minDate.year || 
+                    (year === minDate.year && minMonth < minDate.month)) {
+                    minDate = { year, month: minMonth };
+                }
+                
+                // 检查是否为更晚的日期
+                if (year > maxDate.year || 
+                    (year === maxDate.year && maxMonth > maxDate.month)) {
+                    maxDate = { year, month: maxMonth };
+                }
+            }
+        });
+    });
+
+    if (hasData) {
+        document.getElementById('date-range').textContent = 
+            `${minDate.year}年${minDate.month}月 - ${maxDate.year}年${maxDate.month}月`;
+    } else {
+        document.getElementById('date-range').textContent = '暂无数据';
+    }
+}
+
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         // 首先加载数据
         await loadData();
+        
+        // 更新概览统计
+        calculateTotalUsers();
+        calculateDateRange();
         
         // 初始化图表
         initChart();

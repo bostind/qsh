@@ -7,6 +7,36 @@ body {
     color: #333;
 }
 
+.overview-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.overview-stats {
+    display: flex;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+}
+
+.stat-label {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.stat-value {
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
 .container {
     max-width: 1000px;
     margin: 0 auto;
