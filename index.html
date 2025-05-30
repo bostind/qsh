@@ -3,30 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>系统</title>
+    <title>钱多事少离家近</title>
     <link rel="stylesheet" href="style.css">
     <script src="/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>系统</h1>
+        <h1>钱多事少离家近</h1>
         
         <div class="overview-section">
             <h2>数据概览</h2>
             <div class="overview-stats">
                 <div class="stat-item">
-                    <span class="stat-label">总用户数：</span>
+                    <span class="stat-label">用户数：</span>
                     <span id="total-users" class="stat-value">0</span>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-label">数据时间范围：</span>
+                    <span class="stat-label">时间范围：</span>
                     <span id="date-range" class="stat-value">暂无数据</span>
                 </div>
             </div>
         </div>
         
         <div class="chart-section">
-            <h2>数据图表</h2>
             <canvas id="data-chart"></canvas>
             <div class="chart-controls">
                 <input type="range" id="chart-range" min="0" max="1" value="0" step="1">

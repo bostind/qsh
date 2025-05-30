@@ -97,27 +97,44 @@ async function saveData() {
     const dataStr = JSON.stringify(userData, null, 2);
     
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
         const response = await fetch('/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: dataStr
+            body: dataStr,
+            signal: controller.signal
         });
         
-        if (response.ok) {
-            const result = await response.json();
-            if (result.success) {
-                // 更新图表
-                updateChart();
-                alert('数据保存成功！');
-                return;
-            }
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        alert('数据保存失败，请重试');
+        
+        const result = await response.json().catch(() => {
+            throw new Error('Invalid JSON response');
+        });
+        
+        if (!result.success) {
+            throw new Error('Server returned unsuccessful result');
+        }
+        
+        // 更新图表
+        updateChart();
+        alert('数据保存成功！');
+        return;
+        
     } catch (error) {
         console.error('保存错误:', error);
-        alert('数据保存失败，请重试');
+        if (error.name === 'AbortError') {
+            alert('请求超时，请检查网络连接后重试');
+        } else {
+            alert(`数据保存失败: ${error.message}`);
+        }
     }
 }
 
@@ -256,6 +273,9 @@ function updateChart() {
         // 按年份和月份排序
         const sortedYears = Array.from(allYears).sort();
         const sortedMonths = Array.from(allMonths).sort((a, b) => a - b);
+
+
+        
         
         // 准备图表数据
         allChartData.labels = [];
@@ -343,13 +363,13 @@ function updateChart() {
         // 初始化滑块控件
         const rangeSlider = document.getElementById('chart-range');
         const dataLength = allChartData.labels.length;
-        const displayCount = Math.min(30, dataLength);
+        const displayCount = Math.min(36, dataLength);
         
         rangeSlider.min = 0;
         rangeSlider.max = Math.max(0, dataLength - displayCount);
-        rangeSlider.value = 0;
+        rangeSlider.value = rangeSlider.max;
         
-        // 默认显示最近30个数据点
+        // 默认显示最近36个数据点
         const startIndex = Math.max(0, dataLength - displayCount);
         updateVisibleData(startIndex, dataLength);
         
